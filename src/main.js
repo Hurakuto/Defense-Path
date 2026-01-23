@@ -1,8 +1,8 @@
-import { MenuController } from "./controllers/MenuController"
-import { Path } from "./models/Path";
+import { MenuController } from "./controllers/MenuController.js";
+import { MapsController } from "./controllers/MapsController.js";
 
 const menu_c = new MenuController();
 
-const path = new Path()
-
-path.drawPath(path.map1);
+const mapsController = new MapsController(1); // TODO: check the given value
+window.mapsController = mapsController;
+mapsController.init();

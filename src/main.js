@@ -1,8 +1,3 @@
-import { MenuController } from "./controllers/MenuController.js";
-import { MapsController } from "./controllers/MapsController.js";
+import { AppController } from "./controllers/AppController.js";
 
-const menu_c = new MenuController();
-
-const mapsController = new MapsController(1); // TODO: check the given value
-window.mapsController = mapsController;
-mapsController.init();
+const appController = new AppController()

@@ -1,6 +1,7 @@
 import { MapWaypoints } from "./MapWaypoints";
+import pouletoSprite from "../assets/sprites/enemies/pouleto.png";
 
-export class Enemy{
+export class Enemy {
     #id;
     #position;
     #ctx;
@@ -9,18 +10,22 @@ export class Enemy{
     #height;
     #center;
     #speed;
-    #waypoints
+    #waypoints;
 
-    constructor(waypoints, { position = { x: -100, y: 541 } } = {}) {
+    constructor(waypoints, position = {}) {
         // super({position})
 
         this.#id = crypto.randomUUID();
-        this.#position = position;
+        this.#position = {
+            x: 0,
+            y: 0,
+            ...position,
+        };
         this.#waypointIndex = 0;
         this.#speed = 1.5;
 
-        this.#width = 50;
-        this.#height = 50;
+        this.#width = 16;
+        this.#height = 16;
 
         this.#center = {
             x: this.#position.x + this.#width / 2,
@@ -36,14 +41,30 @@ export class Enemy{
     }
 
     draw() {
-        const image = new Image()
-        image.src = "src/assets/sprites/enemies/pouleto.png";
-        this.#ctx.fillRect(
-            this.#position.x,
-            this.#position.y,
-            this.#width,
-            this.#height,
-        );
+        const image = new Image();
+        image.src = pouletoSprite;
+
+        // this.#ctx.fillStyle = "red"
+        // this.#ctx.fillRect(
+        //     this.#position.x,
+        //     this.#position.y,
+        //     this.#width,
+        //     this.#height,
+        // );
+
+        this.#ctx.drawImage(image, this.#position.x, this.#position.y);
+    }
+
+    isAtDestination(destination = {}, tolerance = 8) {
+        const isXValid =
+            this.#center.x - tolerance / 2 <= destination.x &&
+            this.#center.x + tolerance / 2 >= destination.x;
+
+        const isYValid =
+            this.#center.y - tolerance / 2 <= destination.y &&
+            this.#center.y + tolerance / 2 >= destination.y;
+
+        return isXValid && isYValid;
     }
 
     update() {
@@ -59,11 +80,12 @@ export class Enemy{
             x: Math.round(this.#position.x) + this.#width / 2,
             y: Math.round(this.#position.y) + this.#height / 2,
         };
-        console.log(this.#center.x, this.#center.y)
+        // console.log(this.#center)
 
         if (
-            Math.round(this.#center.x) === Math.round(waypoint.x) &&
-            Math.round(this.#center.y) === Math.round(waypoint.y) &&
+            // Math.round(this.#center.x) === Math.round(waypoint.x) &&
+            // Math.round(this.#center.y) === Math.round(waypoint.y) &&
+            this.isAtDestination({ x: waypoint.x, y: waypoint.y }) &&
             this.#waypointIndex < this.#waypoints.length - 1
         ) {
             this.#waypointIndex++;
@@ -74,31 +96,31 @@ export class Enemy{
         return this.#id;
     }
 
-    set position(pos){
-        this.#position = pos
+    set position(pos) {
+        this.#position = pos;
     }
 
-    get position(){
+    get position() {
         return this.#position;
     }
 
-    set center(c){
-        this.#center = c
+    set center(c) {
+        this.#center = c;
     }
 
-    get center(){
-        return this.#center
+    get center() {
+        return this.#center;
     }
 
-    set waypointIndex(i){
-        this.#waypointIndex = i
+    set waypointIndex(i) {
+        this.#waypointIndex = i;
     }
 
-    get waypointIndex(){
-        return this.#waypointIndex
+    get waypointIndex() {
+        return this.#waypointIndex;
     }
 
-    get waypoints(){
-        return this.#waypoints
+    get waypoints() {
+        return this.#waypoints;
     }
 }

@@ -1,10 +1,8 @@
-import { EventEmitter } from "../utils/EventEmitter.js";
 import { Enemy } from "../models/Enemy.js";
-export class EnemiesManager extends EventEmitter {
+export class EnemiesManager {
     #enemies;
 
     constructor(){
-        super();
         this.#enemies = [];
     }
 

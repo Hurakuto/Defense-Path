@@ -1,17 +1,21 @@
-import { EnemiesManager } from "../managers/EnemiesManager.js";
 import { MenuView } from "../views/MenuView.js";
 
 export class MenuController {
     #manager;
     #view;
+    #handlePlay;
 
-    constructor() {
+    constructor(handlePlay) {
         this.#view = new MenuView("#app");
-
-        this.#init();
+        this.#handlePlay = handlePlay;
     }
 
-    #init(){
+    init(){
         this.#view.render();
+        this.#view.onPlayButtonClick(this.#handlePlay);
+    }
+
+    remove() {
+        this.#view.clear();
     }
 }

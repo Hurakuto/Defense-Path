@@ -1,3 +1,5 @@
+import { Speedy } from "../models/Enemies/Speedy.js";
+import { Tanky } from "../models/Enemies/Tanky.js";
 import { Enemy } from "../models/Enemy.js";
 export class EnemiesManager {
     #enemies;
@@ -10,8 +12,23 @@ export class EnemiesManager {
         return this.#enemies
     }
 
-    add(waypoints, pos){
-        this.#enemies.push(new Enemy(waypoints, pos));
+    #getEnemyClass(type) {
+        switch (type) {
+            case "speedy":
+                return Speedy;
+
+            case "tanky":
+                return Tanky;
+
+            case "normal":
+            default:
+                return Enemy;
+        }
+    }
+
+    add(waypoints, pos, type = "normal"){
+        const EnemyClass = this.#getEnemyClass(type);
+        this.#enemies.push(new EnemyClass(waypoints, pos));
     }
 
     remove(id){

@@ -5,6 +5,7 @@ export class MenuView {
     #imgMapOne
     #imgMapTwo
     #imgMapThree
+    #imgMapFour
     #playButton
     #mapId
     #playButtonCallback
@@ -24,6 +25,7 @@ export class MenuView {
         this.#imgMapOne = document.createElement("img");
         this.#imgMapTwo = document.createElement("img");
         this.#imgMapThree = document.createElement("img");
+        this.#imgMapFour = document.createElement("img");
         this.#playButton = document.createElement('button')
         this.#warning = document.createElement('p');
 
@@ -33,7 +35,7 @@ export class MenuView {
         this.render();
     }
 
-    get currentMenu(){
+    get currentMenu() {
         return this.#currentMenu;
     }
 
@@ -49,7 +51,7 @@ export class MenuView {
 
         this.#playButton.addEventListener("click", () => {
             if (typeof this.#playButtonCallback === "function") {
-                if(this.#mapId===undefined){
+                if (this.#mapId === undefined) {
                     this.#warning.setAttribute("display", "block")
                 }
                 else {
@@ -79,20 +81,30 @@ export class MenuView {
         this.#imgMapOne.addEventListener("click", () => {
             this.#imgMapTwo.classList.remove("selected");
             this.#imgMapThree.classList.remove("selected");
+            this.#imgMapFour.classList.remove("selected");
             this.#imgMapOne.classList.toggle("selected");
             this.#mapId = 1;
         })
         this.#imgMapTwo.addEventListener("click", () => {
             this.#imgMapOne.classList.remove("selected");
             this.#imgMapThree.classList.remove("selected");
+            this.#imgMapFour.classList.remove("selected");
             this.#imgMapTwo.classList.toggle("selected");
             this.#mapId = 2;
         })
         this.#imgMapThree.addEventListener("click", () => {
             this.#imgMapOne.classList.remove("selected");
             this.#imgMapTwo.classList.remove("selected");
+            this.#imgMapFour.classList.remove("selected");
             this.#imgMapThree.classList.toggle("selected");
             this.#mapId = 3;
+        })
+        this.#imgMapFour.addEventListener("click", () => {
+            this.#imgMapOne.classList.remove("selected");
+            this.#imgMapTwo.classList.remove("selected");
+            this.#imgMapThree.classList.remove("selected");
+            this.#imgMapFour.classList.toggle("selected");
+            this.#mapId = 4;
         })
     }
 
@@ -128,7 +140,7 @@ export class MenuView {
 
     createMapsMenu() {
         const titleSelectMap = document.createElement("h2");
-        
+
         this.#warning.textContent = "Veuillez bien selectionner une map avant !";
         this.#warning.setAttribute("display", "none");
 
@@ -141,6 +153,9 @@ export class MenuView {
         const label3 = document.createElement('label');
         label3.classList.add("labels");
         label3.textContent = "River";
+        const label4 = document.createElement('label');
+        label4.classList.add("labels");
+        label4.textContent = "Castle";
 
         titleSelectMap.classList.add("titleMaps");
         titleSelectMap.textContent = "Veuillez selectionnez une map";
@@ -155,10 +170,14 @@ export class MenuView {
         this.#imgMapThree.setAttribute("src", "src/assets/maps/map3.png");
         this.#imgMapThree.setAttribute("alt", "Map 3");
         this.#imgMapThree.classList.add("mapThree", "maps");
+        this.#imgMapFour.setAttribute("src", "src/assets/maps/map4.png");
+        this.#imgMapFour.setAttribute("alt", "Map 4");
+        this.#imgMapFour.classList.add("mapFour", "maps");
 
         const divMapOne = document.createElement('div');
         const divMapTwo = document.createElement('div');
         const divMapThree = document.createElement('div');
+        const divMapFour = document.createElement('div');
 
         this.#playButton.textContent = "JOUER";
         this.#playButton.classList.add('play-button');
@@ -166,8 +185,9 @@ export class MenuView {
         divMapOne.append(this.#imgMapOne, label1);
         divMapTwo.append(this.#imgMapTwo, label2);
         divMapThree.append(this.#imgMapThree, label3);
+        divMapFour.append(this.#imgMapFour, label4);
 
-        presentationMap.append(divMapOne, divMapTwo, divMapThree);
+        presentationMap.append(divMapOne, divMapTwo, divMapThree, divMapFour);
         this.#containerElement.append(titleSelectMap, presentationMap, this.#playButton, this.#warning);
     }
 

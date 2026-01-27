@@ -1,35 +1,39 @@
-import { MapWaypoints } from "./MapWaypoints";
 import pouletoSprite from "../assets/sprites/enemies/pouleto.png";
+import { Sprite } from "./Sprite";
 
-export class Enemy {
+export class Enemy extends Sprite {
     #id;
-    #position;
     #ctx;
     #waypointIndex;
     #width;
     #height;
     #center;
-    #speed;
+    speed;
+    color;
+    #radius;
     #waypoints;
+    health;
 
-    constructor(waypoints, position = {}) {
-        // super({position})
+    constructor(waypoints, position = {}, offset = { x: 0, y: 0 }) {
+        super(position, pouletoSprite, { max: 4 }, 16, offset)
 
         this.#id = crypto.randomUUID();
-        this.#position = {
-            x: 0,
-            y: 0,
-            ...position,
+        this.position = {
+            x: (position.x ?? 0) - 8,
+            y: (position.y ?? 0) - 8,
         };
         this.#waypointIndex = 0;
-        this.#speed = 1.5;
+        this.speed = 0.5;
 
         this.#width = 16;
         this.#height = 16;
 
+        this.#radius = 8;
+        this.color = "red";
+
         this.#center = {
-            x: this.#position.x + this.#width / 2,
-            y: this.#position.y + this.#height / 2,
+            x: this.position.x + this.#width / 2,
+            y: this.position.y + this.#height / 2,
         };
 
         const canva = document.querySelector("canvas");
@@ -37,22 +41,41 @@ export class Enemy {
         this.#ctx = canva.getContext("2d");
         this.#waypoints = waypoints;
 
+        this.health = 100;
+        this.maxHealth = 100
+
         console.log(`Enemy ${this.#id} initiated with waypoints:`, waypoints);
     }
 
     draw() {
-        const image = new Image();
-        image.src = pouletoSprite;
+        super.draw()
 
-        // this.#ctx.fillStyle = "red"
-        // this.#ctx.fillRect(
-        //     this.#position.x,
-        //     this.#position.y,
-        //     this.#width,
-        //     this.#height,
-        // );
+        this.#ctx.fillStyle = "rgba(0,0,255,0.5)" // ? Hitbox
+        this.#ctx.beginPath();
+        this.#ctx.arc(
+            this.#center.x,
+            this.#center.y,
+            this.#radius,
+            0,
+            Math.PI * 2,
+        );
+        this.#ctx.fill();
 
-        this.#ctx.drawImage(image, this.#position.x, this.#position.y);
+        // ? Health Bar
+        this.#ctx.fillStyle = "red";
+        this.#ctx.fillRect(
+            this.position.x,
+            this.position.y - 8,
+            this.#width,
+            this.#height / 4,
+        );
+        this.#ctx.fillStyle = "green";
+        this.#ctx.fillRect(
+            this.position.x - 2,
+            this.position.y - 8 - 0.25,
+            ((this.health / this.maxHealth)) * (this.#width + 4),
+            this.#height / 4 + 0.5,
+        );
     }
 
     isAtDestination(destination = {}, tolerance = 8) {
@@ -74,11 +97,11 @@ export class Enemy {
         const yDistance = waypoint.y - this.#center.y;
         const xDistance = waypoint.x - this.#center.x;
         const angle = Math.atan2(yDistance, xDistance);
-        this.#position.x += Math.cos(angle) * this.#speed;
-        this.#position.y += Math.sin(angle) * this.#speed;
+        this.position.x += Math.cos(angle) * this.speed;
+        this.position.y += Math.sin(angle) * this.speed;
         this.#center = {
-            x: Math.round(this.#position.x) + this.#width / 2,
-            y: Math.round(this.#position.y) + this.#height / 2,
+            x: Math.round(this.position.x) + this.#width / 2,
+            y: Math.round(this.position.y) + this.#height / 2,
         };
         // console.log(this.#center)
 
@@ -94,14 +117,6 @@ export class Enemy {
 
     get id() {
         return this.#id;
-    }
-
-    set position(pos) {
-        this.#position = pos;
-    }
-
-    get position() {
-        return this.#position;
     }
 
     set center(c) {
@@ -122,5 +137,17 @@ export class Enemy {
 
     get waypoints() {
         return this.#waypoints;
+    }
+
+    get radius() {
+        return this.#radius;
+    }
+
+    set health(h) {
+        this.health = h;
+    }
+
+    get health() {
+        return this.health;
     }
 }

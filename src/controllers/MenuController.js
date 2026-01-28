@@ -11,11 +11,20 @@ export class MenuController {
     }
 
     init(){
-        this.#view.render();
+        this.getLocalStorage();
         this.#view.onPlayButtonClick(this.#handlePlay);
     }
 
     remove() {
         this.#view.clear();
+    }
+
+    getLocalStorage(){
+        if(!localStorage.getItem("username")){
+            this.#view.Login()
+        }
+        else{
+            this.#view.init()
+        }
     }
 }

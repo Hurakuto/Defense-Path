@@ -1,4 +1,3 @@
-
 import { Sprite } from "./Sprite.js";
 
 export class Building extends Sprite {
@@ -14,8 +13,15 @@ export class Building extends Sprite {
     #frames;
     #ProjectileClass;
 
-    constructor(enemies, position = {}, sprite, ProjectileClass, offset = { x: 0, y: 0 }) {
-        super(position, sprite, { max: 1 }, 16, offset)
+    constructor(
+        enemies,
+        position = {},
+        sprite,
+        ProjectileClass,
+        offset = { x: 0, y: 0 },
+        f = 100,
+    ) {
+        super(position, sprite, { max: 1 }, 16, offset);
         this.#id = crypto.randomUUID();
 
         const canva = document.querySelector("canvas");
@@ -31,6 +37,8 @@ export class Building extends Sprite {
         this.#target;
         this.#ProjectileClass = ProjectileClass;
 
+        this.a = 0; // Hitboxs Hidden
+
         this.center = {
             x: this.position.x + this.width / 2,
             y: this.position.y + this.height / 2,
@@ -39,6 +47,8 @@ export class Building extends Sprite {
         this.#projectiles = [];
 
         this.#frames = 0;
+
+        this.f = f;
     }
 
     get center() {
@@ -66,13 +76,13 @@ export class Building extends Sprite {
     }
 
     draw() {
-        super.draw()
+        super.draw();
     }
 
     update() {
         this.draw();
 
-        if (this.#frames % 100 === 0 && this.#target) {
+        if (this.#frames % this.f === 0 && this.#target) {
             this.projectiles.push(
                 new this.#ProjectileClass(this.#target, {
                     x: this.center.x,

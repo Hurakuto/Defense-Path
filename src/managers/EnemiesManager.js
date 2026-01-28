@@ -1,6 +1,7 @@
 import { Speedy } from "../models/Enemies/Speedy.js";
 import { Tanky } from "../models/Enemies/Tanky.js";
-import { Enemy } from "../models/Enemy.js";
+import { Normal } from "../models/Enemies/Normal.js";
+import { Lava } from "../models/Enemies/Lava.js";
 export class EnemiesManager {
     #enemies;
 
@@ -19,10 +20,14 @@ export class EnemiesManager {
 
             case "tanky":
                 return Tanky;
+            
+            case "lava":
+                console.log('Lava spawned')
+                return Lava;
 
             case "normal":
             default:
-                return Enemy;
+                return Normal;
         }
     }
 

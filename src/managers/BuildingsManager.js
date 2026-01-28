@@ -1,15 +1,16 @@
 import { Mage } from "../models/Buildings/Mage.js";
 import { Summoner } from "../models/Buildings/Summoner.js";
+import { Archer } from "../models/Buildings/Archer.js";
 
 export class BuildingsManager {
-    #buildings
+    #buildings;
 
     constructor() {
-        this.#buildings = []
+        this.#buildings = [];
     }
 
     get buildings() {
-        return this.#buildings
+        return this.#buildings;
     }
 
     add(enemies, pos, type = "mage", waypoints = []) {
@@ -18,6 +19,11 @@ export class BuildingsManager {
             case "summoner":
                 building = new Summoner(enemies, pos, waypoints);
                 break;
+
+            case "archer":
+                building = new Archer(enemies, pos);
+                break;
+
             case "mage":
             default:
                 building = new Mage(enemies, pos);
@@ -26,11 +32,13 @@ export class BuildingsManager {
 
         this.#buildings.push(building);
         this.#buildings.sort((a, b) => {
-            return a.position.y - b.position.y
-        })
+            return a.position.y - b.position.y;
+        });
     }
 
     remove(id) {
-        this.#buildings = this.#buildings.filter((building) => building.id !== id);
+        this.#buildings = this.#buildings.filter(
+            (building) => building.id !== id,
+        );
     }
 }

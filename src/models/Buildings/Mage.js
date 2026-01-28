@@ -10,6 +10,8 @@ export class Mage extends Building {
 
         const canva = document.querySelector("canvas");
         this.#ctx = canva.getContext("2d");
+
+        this.radius = 128
     }
 
     draw() {
@@ -17,7 +19,7 @@ export class Mage extends Building {
 
         // ? Hitbox
         this.#ctx.beginPath();
-        this.#ctx.fillStyle = "rgba(0,0,255,0.2)"; // Range debug
+        this.#ctx.strokeStyle = `rgba(0,0,255,${this.a})`; // Range debug
         this.#ctx.arc(
             this.center.x,
             this.center.y,
@@ -25,6 +27,6 @@ export class Mage extends Building {
             0,
             Math.PI * 2,
         );
-        this.#ctx.fill();
+        this.#ctx.stroke();
     }
 }

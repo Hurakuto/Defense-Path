@@ -9,8 +9,8 @@ export class Sprite {
         height = 16,
         offset = {
             x: 0,
-            y: 0
-        }
+            y: 0,
+        },
     ) {
         this.position = pos;
         this.#image = new Image();
@@ -20,12 +20,12 @@ export class Sprite {
             max: frames.max,
             current: 0,
             elapsed: 0,
-            hold: 7
+            hold: 7,
         };
 
         this.height = height;
 
-        this.offset = offset
+        this.offset = offset;
 
         const canva = document.querySelector("canvas");
         this.#ctx = canva.getContext("2d");
@@ -54,9 +54,9 @@ export class Sprite {
             crop.height,
         );
 
-        this.#frames.elapsed++
-        if(this.#frames.elapsed % this.#frames.hold === 0){
-            this.#frames.current++
+        this.#frames.elapsed++;
+        if (this.#frames.elapsed % this.#frames.hold === 0) {
+            this.#frames.current++;
             if (this.#frames.current >= this.#frames.max - 1) {
                 this.#frames.current = 0;
             }

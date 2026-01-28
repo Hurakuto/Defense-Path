@@ -15,7 +15,7 @@ export class BabyChicken extends Sprite {
 
         this.#waypoints = [...waypoints];
         this.#currentWaypointIndex = this.#waypoints.length - 2;
-        this.#speed = 0.2
+        this.#speed = 0.2;
         this.#health = 50;
         this.#velocity = { x: 0, y: 0 };
         this.#id = crypto.randomUUID();
@@ -42,8 +42,14 @@ export class BabyChicken extends Sprite {
 
         // ? Hitbox
         this.ctx.beginPath();
-        this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-        this.ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        this.ctx.arc(
+            this.position.x,
+            this.position.y,
+            this.radius,
+            0,
+            Math.PI * 2,
+        );
+        this.ctx.fillStyle = "rgba(255, 0, 0, 0)";
         this.ctx.fill();
         this.ctx.closePath();
 
@@ -53,7 +59,10 @@ export class BabyChicken extends Sprite {
         }
 
         const target = this.#waypoints[this.#currentWaypointIndex];
-        const angle = Math.atan2(target.y - this.position.y, target.x - this.position.x);
+        const angle = Math.atan2(
+            target.y - this.position.y,
+            target.x - this.position.x,
+        );
 
         this.#velocity.x = Math.cos(angle) * this.#speed;
         this.#velocity.y = Math.sin(angle) * this.#speed;

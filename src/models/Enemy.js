@@ -14,8 +14,13 @@ export class Enemy extends Sprite {
     #waypoints;
     health;
 
-    constructor(waypoints, position = {}, offset = { x: 0, y: 0 }) {
-        super(position, pouletoSprite, { max: 4 }, 16, offset)
+    constructor(
+        sprite = pouletoSprite,
+        waypoints,
+        position = {},
+        offset = { x: 0, y: 0 },
+    ) {
+        super(position, sprite, { max: 4 }, 16, offset);
 
         this.#id = crypto.randomUUID();
         this.position = {
@@ -42,15 +47,15 @@ export class Enemy extends Sprite {
         this.#waypoints = waypoints;
 
         this.health = 100;
-        this.maxHealth = 100
+        this.maxHealth = 100;
 
-        console.log(`Enemy ${this.#id} initiated with waypoints:`, waypoints);
+        // console.log(`Enemy ${this.#id} initiated with waypoints:`, waypoints);
     }
 
     draw() {
-        super.draw()
+        super.draw();
 
-        this.#ctx.fillStyle = "rgba(0,0,255,0.5)" // ? Hitbox
+        this.#ctx.fillStyle = "rgba(0,0,255,0)"; // ? Hitbox
         this.#ctx.beginPath();
         this.#ctx.arc(
             this.#center.x,
@@ -73,7 +78,7 @@ export class Enemy extends Sprite {
         this.#ctx.fillRect(
             this.position.x - 2,
             this.position.y - 8 - 0.25,
-            ((this.health / this.maxHealth)) * (this.#width + 4),
+            (this.health / this.maxHealth) * (this.#width + 4),
             this.#height / 4 + 0.5,
         );
     }

@@ -17,7 +17,7 @@ export class MapsController {
     #gameState
     #selectedTowerType = "mage";
 
-    constructor(mapId) {
+    constructor(mapId, callback) {
         this.#Emanager = new EnemiesManager();
         this.#Bmanager = new BuildingsManager();
         this.#Pmanager = new ProjectilesManager();
@@ -30,8 +30,11 @@ export class MapsController {
         );
         this.#mapWaypoints = new MapWaypoints(mapId - 1);
 
+        this.callback = callback
+
         this.#waveNumber = 0
         this.#hearts = 10
+        this.#view.health = this.#hearts
         this.#gameState = undefined
 
         // Wave management
@@ -39,9 +42,7 @@ export class MapsController {
         this.spawnTimer = 0;
         this.waveDelayTimer = 0;
         this.isWaveInProgress = false;
-
-
-        // TODO: add currency and localStorage
+        this.#gameState = "inGame"
 
         this.#init();
         this.#initUI();
@@ -82,7 +83,7 @@ export class MapsController {
         // this.#hearts = undefined
 
 
-        console.log(this.#gameState, this.#hearts, this.#waveNumber)
+        // console.log(this.#gameState, this.#hearts, this.#waveNumber)
     }
 
     addEnemy(position = {}, type = "normal") {
@@ -119,9 +120,18 @@ export class MapsController {
 
     update() {
 
-        if (typeof this.#hearts === "number" && this.#hearts <= 0) {
+        if (typeof this.#hearts === "number" && this.#hearts <= 0 && this.#gameState==="inGame") {
             this.#gameState = "Lose"
             this.endGame()
+            if(typeof Number(localStorage.getItem("loses"))==="number"){
+                localStorage.setItem("loses", String(Number(localStorage.getItem("loses"))+1))
+            }
+            else{
+                localStorage.setItem("loses", String(1))
+            }
+            this.#view.EndDefeat()
+            this.callback()
+            return;
         }
 
         // ? Waves system
@@ -135,19 +145,29 @@ export class MapsController {
                 const waveData = currentWaveData.enemies;
 
                 // Fill Queue
-                for (let i = 0; i < waveData.normal; i++) this.spawnQueue.push("normal");
-                for (let i = 0; i < waveData.speedy; i++) this.spawnQueue.push("speedy");
                 for (let i = 0; i < waveData.tanky; i++) this.spawnQueue.push("tanky");
+                for (let i = 0; i < waveData.normal; i++) this.spawnQueue.push("normal");                
+                for (let i = 0; i < waveData.speedy; i++) this.spawnQueue.push("speedy");
+                for (let i = 0; i < waveData.lava; i++) this.spawnQueue.push("lava");
 
                 this.spawnInterval = waveData.spawnInterval || 60; // Default 1s
                 this.spawnTimer = this.spawnInterval;
                 this.waveDelayTimer = waveData.waveDelay || 300; // Default 5s
 
                 this.isWaveInProgress = true;
-                console.log(`Starting Wave ${this.#waveNumber + 1}`);
-            } else if (this.allEnemies().length === 0) {
-                this.#gameState = "Win"
+                // console.log(`Starting Wave ${this.#waveNumber + 1}`);
+            } else if (this.allEnemies().length === 0 && this.#gameState==="inGame") {
+                if(typeof Number(localStorage.getItem("wins"))==="number"){
+                    localStorage.setItem("wins", String(Number(localStorage.getItem("wins"))+1))
+                }
+                else{
+                    localStorage.setItem("wins", String(1))
+                }
                 this.endGame()
+                this.#view.EndWin()
+                this.callback()
+                this.#gameState="Win"
+                return;
             }
         }
 
@@ -167,7 +187,8 @@ export class MapsController {
                 if (this.waveDelayTimer <= 0) {
                     this.isWaveInProgress = false;
                     this.#waveNumber++;
-                    console.log("Wave Delay Finished. Next Wave Incoming.");
+                    // console.log("Wave Delay Finished. Next Wave Incoming.");
+                    this.#view.coins += Math.round(25 + 25*(1-this.#waveNumber/100)/2)
                 }
             }
         }
@@ -181,6 +202,7 @@ export class MapsController {
                 )
             ) {
                 this.#hearts--
+                this.#view.health = this.#hearts
                 // ! Enemy removed
                 // console.log("Enemie removed");
                 this.#Emanager.remove(enemy.id);
@@ -200,7 +222,13 @@ export class MapsController {
 
             if (enemy.health <= 0) {
                 this.#Emanager.remove(enemy.id);
-                this.#view.coins += 25
+                this.#view.coins += Math.round(25 + 25*(1-this.#waveNumber/100)/2)
+                if(typeof Number(localStorage.getItem("kills"))==="number"){
+                    localStorage.setItem("kills", String(Number(localStorage.getItem("kills"))+1))
+                }
+                else{
+                    localStorage.setItem("kills", String(1))
+                }
                 // ! Enemy removed
                 // console.log("Enemie removed");
             }
@@ -219,6 +247,23 @@ export class MapsController {
                 const distance = Math.hypot(xDifference, yDifference);
 
                 return distance < enemy.radius + building.radius;
+            }).sort((enemy1, enemy2) => {
+                const xDifference1 = enemy1.center.x - this.#mapWaypoints.waypoints[enemy1.waypointIndex].x
+                const yDifference1 = enemy1.center.y - this.#mapWaypoints.waypoints[enemy1.waypointIndex].y;
+                const distance1 = Math.hypot(xDifference1, yDifference1);
+
+                const xDifference2 = enemy2.center.x - this.#mapWaypoints.waypoints[enemy2.waypointIndex].x
+                const yDifference2 = enemy2.center.y - this.#mapWaypoints.waypoints[enemy2.waypointIndex].y;
+                const distance2 = Math.hypot(xDifference2, yDifference2);
+
+                if(enemy1.waypointIndex>enemy2.waypointIndex){
+                    return -1
+                }
+                if(enemy1.waypointIndex<enemy2.waypointIndex){
+                    return 1
+                }
+
+                return distance1 > distance2
             });
 
             building.target = validEnemies[0];
@@ -230,15 +275,15 @@ export class MapsController {
 
                 if (projectile.enemy) {
                     projectile.update();
-                    const xDifference =
-                        projectile.enemy.center.x - projectile.position.x;
-                    const yDifference =
-                        projectile.enemy.center.y - projectile.position.y;
-                    const distance = Math.hypot(xDifference, yDifference);
 
-                    if (distance < projectile.enemy.radius + projectile.radius) {
-                        projectile.enemy.health -= 20
-                        console.log(projectile.enemy.health);
+                    const xDifference = projectile.enemy.center.x - projectile.position.x;
+                    const yDifference = projectile.enemy.center.y - projectile.position.y;
+                    const distance = Math.hypot(xDifference, yDifference);
+                    const collisionThreshold = projectile.enemy.radius + projectile.radius;
+
+                    if (distance < collisionThreshold) {
+                        projectile.enemy.health -= projectile.dmg
+                        // console.log("HIT! Enemy health:", projectile.enemy.health);
                         building.projectiles.splice(i, 1);
                     }
                 }

@@ -1,25 +1,22 @@
 export class Wave {
     #id;
-    #enemies
-    #mapWaypoints
+    #enemies;
+    #mapWaypoints;
 
-    constructor(enemies, waypoints){
+    constructor(enemies, waypoints) {
         this.#id = crypto.randomUUID();
-        this.#enemies = enemies
-        this.#mapWaypoints = waypoints
+        this.#enemies = enemies;
+        this.#mapWaypoints = waypoints;
     }
 
-    spawnEnemies(){
-
-        for (let i = 100; i < 10 * 100; i += 50) {
-            this.addEnemy({
-                x: this.#mapWaypoints.waypoints[0].x - i,
-                y: this.#mapWaypoints.waypoints[0].y,
-            });
-        }
+    spawnEnemies() {
+        this.addEnemy({
+            x: this.#mapWaypoints.waypoints[0].x - i,
+            y: this.#mapWaypoints.waypoints[0].y,
+        });
     }
 
-    get enemies(){
-        return this.#enemies
+    get enemies() {
+        return this.#enemies;
     }
 }

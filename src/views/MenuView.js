@@ -10,10 +10,16 @@ export class MenuView {
     #mapId
     #playButtonCallback
     #warning
+    #buttonEntrer
+    #titleLogin
+    #pseudop
+    #isAtStartMenu
 
 
     constructor(containerElement) {
         this.#containerElement = document.querySelector(containerElement);
+
+        this.#isAtStartMenu = true
 
         if (!this.#containerElement) {
             throw new Error("Element de conteneur non trouvé");
@@ -28,11 +34,16 @@ export class MenuView {
         this.#imgMapFour = document.createElement("img");
         this.#playButton = document.createElement('button')
         this.#warning = document.createElement('p');
+        this.#pseudop = document.createElement('p');
+        this.#buttonEntrer = document.createElement('button');
+        this.#titleLogin = document.createElement("input");
 
         this.#mapId = undefined;
+    }
 
-        this.#setupEventListeners();
-        this.render();
+    init(){
+        this.#setupEventListeners()
+        this.render()
     }
 
     get currentMenu() {
@@ -49,6 +60,16 @@ export class MenuView {
 
     #setupEventListeners() {
 
+        this.#buttonEntrer.addEventListener("click", () => {
+            if(this.#titleLogin.value.trim().length>0){
+                localStorage.setItem("username", this.#titleLogin.value.trim())
+                this.init()
+            }
+            else{
+                this.#pseudop.textContent = "Le nom d'utilisateur ne peut pas être vide !"
+            }
+        })
+
         this.#playButton.addEventListener("click", () => {
             if (typeof this.#playButtonCallback === "function") {
                 if (this.#mapId === undefined) {
@@ -61,6 +82,7 @@ export class MenuView {
         })
 
         this.#startButton.addEventListener("click", () => {
+            this.#isAtStartMenu = false
             this.#startButton.textContent = "loading [|||||-------]";
             setTimeout(() => {
                 this.#currentMenu = "mainMenu";
@@ -69,7 +91,8 @@ export class MenuView {
         });
 
         document.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" || event.key === " ") {
+            if ((event.key === "Enter" || event.key === " ") && this.#isAtStartMenu) {
+                this.#isAtStartMenu = false
                 this.#startButton.textContent = "loading [|||||-------]";
                 setTimeout(() => {
                     this.#currentMenu = "mainMenu";
@@ -123,25 +146,66 @@ export class MenuView {
     }
 
     createStartMenu() {
+
+        const pseudo = document.createElement("h3");
+        pseudo.textContent = localStorage.getItem('username');
+        pseudo.classList.add("pseudo");
+
+        const divPseudo = document.createElement('div');
+        divPseudo.classList.add('div-pseudo');
+
+        const divStats = document.createElement('div');
+        divStats.classList.add('div-stats');
+
+        const party = document.createElement("span");
+        if(Number(localStorage.getItem('wins'))+Number(localStorage.getItem('loses')) === 0 && typeof (Number(localStorage.getItem('wins'))+Number(localStorage.getItem('loses'))) === "number"){
+            party.textContent = "Win Rate : Aucune donnée";
+        } else if(typeof Number(localStorage.getItem('wins'))==="number" && Number(localStorage.getItem('wins'))===0){
+            "Win Rate : 0%"
+        } else {
+            if(typeof Number(localStorage.getItem('loses')) !== "number"){
+                localStorage.setItem('loses', String(0))
+            }
+            if(typeof Number(localStorage.getItem('wins')) !== "number"){
+                localStorage.setItem('wins', String(0))
+            }
+            localStorage.setItem("winRate", Math.round(Number(localStorage.getItem("wins"))/(Number(localStorage.getItem('wins'))+Number(localStorage.getItem('loses')))*100))
+            party.textContent = "Win Rate : " + Math.round(localStorage.getItem('winRate')) + "%";
+        }
+        const win = document.createElement('span');
+        win.textContent = "Wins : " + new Number(localStorage.getItem('wins'));
+        const lose = document.createElement('span');
+        lose.textContent = "Loses : " + new Number(localStorage.getItem('loses'));
+        const kills = document.createElement('span');
+        if(!(typeof Number(localStorage.getItem("kills"))==="number")){
+            localStorage.setItem("kills", String(0))
+        }
+        kills.textContent = "Kills : " + new Number(localStorage.getItem('kills'))
+
+        party.classList.add("stats");
+        win.classList.add("stats");
+        lose.classList.add("stats");
+        kills.classList.add("stats");
+
         const h1 = document.createElement("h1");
-        h1.textContent = "Defense Path 🛤️🛣️";
-        h1.classList.add("no-select");
+        h1.textContent = "Les Poulets Contre-Attaquent 🐥🐤🐣🥚";
 
         const h2 = document.createElement("h2");
-        h2.textContent =
-            'Clique gauche sur "start", appuyer sur Entrer ou Espace';
-        h2.classList.add("no-select");
+        h2.textContent = 'Clique gauche sur "start", appuyer sur Entrer ou Espace';
 
         this.#startButton.textContent = "[START]";
-        this.#startButton.classList.add("no-select");
+        this.#startButton.classList.add("play");
 
-        this.#containerElement.append(h1, h2, this.#startButton);
+        divPseudo.appendChild(pseudo);
+        divStats.append(win, lose, party, kills);
+
+        this.#containerElement.append(divPseudo, divStats, h1, h2, this.#startButton);
     }
 
     createMapsMenu() {
         const titleSelectMap = document.createElement("h2");
 
-        this.#warning.textContent = "Veuillez bien selectionner une map avant !";
+        this.#warning.textContent = "Veuillez selectionner une map !";
         this.#warning.setAttribute("display", "none");
 
         const label1 = document.createElement('label');
@@ -180,7 +244,7 @@ export class MenuView {
         const divMapFour = document.createElement('div');
 
         this.#playButton.textContent = "JOUER";
-        this.#playButton.classList.add('play-button');
+        this.#playButton.classList.add('play-button', 'play');
 
         divMapOne.append(this.#imgMapOne, label1);
         divMapTwo.append(this.#imgMapTwo, label2);
@@ -191,22 +255,17 @@ export class MenuView {
         this.#containerElement.append(titleSelectMap, presentationMap, this.#playButton, this.#warning);
     }
 
-    EndMenu() {
-        const titleEnd = document.createElement("h2");
-        titleEnd.textContent = "Fin De Partie";
+    
+    Login() {
+        this.#setupEventListeners()
+        this.#containerElement.textContent = "";
+        this.#titleLogin.placeholder = "Entrez votre pseudo";
+        this.#titleLogin.classList.add("entry");
 
-        const divMapOne = document.createElement('div');
-        const divMapTwo = document.createElement('div');
-        const divMapThree = document.createElement('div');
 
-        this.#playButton.textContent = "JOUER";
-        this.#playButton.classList.add('play-button');
-
-        // divMapOne.append(this.#imgMapOne, label1);
-        // divMapTwo.append(this.#imgMapTwo, label2);
-        // divMapThree.append(this.#imgMapThree, label3);
-
-        // presentationMap.append(divMapOne, divMapTwo, divMapThree);
-        // this.#containerElement.append(titleSelectMap, presentationMap, this.#playButton);
+        this.#buttonEntrer.textContent = "Entrer";
+        this.#buttonEntrer.setAttribute('type', 'submit');
+        this.#buttonEntrer.classList.add('entrer');
+        this.#containerElement.append(this.#titleLogin, this.#buttonEntrer, this.#pseudop);
     }
 }

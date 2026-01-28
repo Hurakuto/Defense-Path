@@ -9,7 +9,7 @@ export class Projectile extends Sprite {
     #enemy;
     #image;
 
-    constructor(enemy, pos = { x: 0, y: 0 }, sprite, speed = 1, offset = { x: -8, y: -20 }) {
+    constructor(enemy, pos = { x: 0, y: 0 }, sprite, speed = 1, offset = { x: -8, y: -20 }, dmg=20) {
         super(pos, sprite, { max: 5, }, 16, offset);
 
         this.#id = crypto.randomUUID();
@@ -22,6 +22,7 @@ export class Projectile extends Sprite {
         this.#radius = 2.5;
 
         this.#speed = speed;
+        this.dmg = dmg
 
         this.#enemy = enemy;
 

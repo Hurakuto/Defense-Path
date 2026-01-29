@@ -1,5 +1,5 @@
 import { Building } from "../Building.js";
-import archerSprite from "../../assets/sprites/towers/archer.png"
+import archerSprite from "../../assets/sprites/towers/archer.webp"
 import { Arrow } from "../Projectiles/Arrow.js"
 
 export class Archer extends Building{

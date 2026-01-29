@@ -1,5 +1,5 @@
 import { Sprite } from "../Sprite.js";
-import babyChickenSprite from "../../assets/sprites/projectiles/Baby_Chicken.png";
+import babyChickenSprite from "../../assets/sprites/projectiles/Baby_Chicken.webp";
 
 export class BabyChicken extends Sprite {
     #waypoints;

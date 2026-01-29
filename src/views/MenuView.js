@@ -225,16 +225,16 @@ export class MenuView {
         titleSelectMap.textContent = "Veuillez selectionnez une map";
         const presentationMap = document.createElement("div");
         presentationMap.classList.add("mapselector");
-        this.#imgMapOne.setAttribute("src", "src/assets/maps/map1.png");
+        this.#imgMapOne.setAttribute("src", "src/assets/maps/map1.webp");
         this.#imgMapOne.setAttribute("alt", "Map 1");
         this.#imgMapOne.classList.add("mapOne", "maps");
-        this.#imgMapTwo.setAttribute("src", "src/assets/maps/map2.png");
+        this.#imgMapTwo.setAttribute("src", "src/assets/maps/map2.webp");
         this.#imgMapTwo.setAttribute("alt", "Map 2");
         this.#imgMapTwo.classList.add("mapTwo", "maps");
-        this.#imgMapThree.setAttribute("src", "src/assets/maps/map3.png");
+        this.#imgMapThree.setAttribute("src", "src/assets/maps/map3.webp");
         this.#imgMapThree.setAttribute("alt", "Map 3");
         this.#imgMapThree.classList.add("mapThree", "maps");
-        this.#imgMapFour.setAttribute("src", "src/assets/maps/map4.png");
+        this.#imgMapFour.setAttribute("src", "src/assets/maps/map4.webp");
         this.#imgMapFour.setAttribute("alt", "Map 4");
         this.#imgMapFour.classList.add("mapFour", "maps");
 

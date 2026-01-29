@@ -1,5 +1,5 @@
 import { Building } from "../Building.js";
-import mageSprite from "../../assets/sprites/towers/mage.png"
+import mageSprite from "../../assets/sprites/towers/mage.webp"
 import { Fireball } from "../Projectiles/Fireball.js"
 
 export class Mage extends Building {

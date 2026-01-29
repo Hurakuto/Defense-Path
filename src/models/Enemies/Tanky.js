@@ -1,5 +1,5 @@
 import { Enemy } from "../Enemy.js"
-import tankPouletoSprite from "../../assets/sprites/enemies/pouleto-iron.png"
+import tankPouletoSprite from "../../assets/sprites/enemies/pouleto-iron.webp"
 
 export class Tanky extends Enemy {
     constructor(waypoints, position = {}){

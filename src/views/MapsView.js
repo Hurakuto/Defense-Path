@@ -207,13 +207,13 @@ export class MapsView {
 
     chosenMap() {
         if (this.#mapId === 1) {
-            return "src/assets/maps/map1.png";
+            return "src/assets/maps/map1.webp";
         } else if (this.#mapId === 2) {
-            return "src/assets/maps/map2.png";
+            return "src/assets/maps/map2.webp";
         } else if (this.#mapId === 3) {
-            return "src/assets/maps/map3.png";
+            return "src/assets/maps/map3.webp";
         } else if (this.#mapId === 4) {
-            return "src/assets/maps/map4.png";
+            return "src/assets/maps/map4.webp";
         } else {
             throw new Error("Map inconnu");
         }

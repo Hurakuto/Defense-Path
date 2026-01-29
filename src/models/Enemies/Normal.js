@@ -1,5 +1,5 @@
 import { Enemy } from "../Enemy.js"
-import pouletoSprite from "../../assets/sprites/enemies/pouleto.png"
+import pouletoSprite from "../../assets/sprites/enemies/pouleto.webp"
 
 export class Normal extends Enemy {
     constructor(waypoints, position = {}){

@@ -1,5 +1,5 @@
 import { Projectile } from "../Projectile.js";
-import fireballSprite from "../../assets/sprites/projectiles/fireball.png";
+import fireballSprite from "../../assets/sprites/projectiles/fireball.webp";
 
 export class Fireball extends Projectile {
     constructor(enemy, pos = { x: 0, y: 0 }) {

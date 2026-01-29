@@ -1,5 +1,5 @@
 import { Building } from "../Building.js";
-import summonerSprite from "../../assets/sprites/towers/summoner.png";
+import summonerSprite from "../../assets/sprites/towers/summoner.webp";
 import { BabyChicken } from "../Projectiles/BabyChicken.js";
 
 export class Summoner extends Building {

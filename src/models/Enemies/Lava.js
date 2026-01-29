@@ -1,5 +1,5 @@
 import { Enemy } from "../Enemy.js";
-import lavaPouletoSprite from "../../assets/sprites/enemies/pouleto-lava.png";
+import lavaPouletoSprite from "../../assets/sprites/enemies/pouleto-lava.webp";
 
 export class Lava extends Enemy {
     constructor(waypoints, position = {}) {

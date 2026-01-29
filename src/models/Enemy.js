@@ -1,4 +1,4 @@
-import pouletoSprite from "../assets/sprites/enemies/pouleto.png";
+import pouletoSprite from "../assets/sprites/enemies/pouleto.webp";
 import { Sprite } from "./Sprite";
 
 export class Enemy extends Sprite {

@@ -193,50 +193,6 @@ export class MapsController {
             }
         }
 
-        // ? Enemy system
-        this.allEnemies().forEach((enemy) => {
-            enemy.update();
-            if (
-                enemy.isAtDestination(
-                    enemy.waypoints[enemy.waypoints.length - 1],
-                )
-            ) {
-                this.#hearts--
-                this.#view.health = this.#hearts
-                // ! Enemy removed
-                // console.log("Enemie removed");
-                this.#Emanager.remove(enemy.id);
-
-                // ? Changement de cible automatique (non fonctionnel, enemies -> tableau d'enemy, alors que maintenant : enemy -> new Enemy)
-                // this.allBuildings().forEach(building => {
-                //     building.projectiles.forEach(projectile => {
-                //         projectile.enemies.forEach(projectileEnemy => {
-                //             if (projectileEnemy.id === enemy.id) {
-                //                 projectile.enemies = projectile.enemies.filter((projectileEnemy) => projectileEnemy.id !== enemy.id)
-                //                 console.log("Changement de cible")
-                //             }
-                //         })
-                //     })
-                // })
-            }
-
-            if (enemy.health <= 0) {
-                this.#Emanager.remove(enemy.id);
-                this.#view.coins += Math.round(25 + 25*(1-this.#waveNumber/100)/2)
-                if(typeof Number(localStorage.getItem("kills"))==="number"){
-                    localStorage.setItem("kills", String(Number(localStorage.getItem("kills"))+1))
-                }
-                else{
-                    localStorage.setItem("kills", String(1))
-                }
-                // ! Enemy removed
-                // console.log("Enemie removed");
-            }
-
-            // ! Enemies position -> !!! Mal de crâne !!!
-            // console.log(enemy.position);
-        });
-
         // ? Building system
         this.allBuildings().forEach((building) => {
             building.update();
@@ -316,6 +272,52 @@ export class MapsController {
                 }
             }
 
+        });
+
+        
+
+        // ? Enemy system
+        this.allEnemies().forEach((enemy) => {
+            enemy.update();
+            if (
+                enemy.isAtDestination(
+                    enemy.waypoints[enemy.waypoints.length - 1],
+                )
+            ) {
+                this.#hearts--
+                this.#view.health = this.#hearts
+                // ! Enemy removed
+                // console.log("Enemie removed");
+                this.#Emanager.remove(enemy.id);
+
+                // ? Changement de cible automatique (non fonctionnel, enemies -> tableau d'enemy, alors que maintenant : enemy -> new Enemy)
+                // this.allBuildings().forEach(building => {
+                //     building.projectiles.forEach(projectile => {
+                //         projectile.enemies.forEach(projectileEnemy => {
+                //             if (projectileEnemy.id === enemy.id) {
+                //                 projectile.enemies = projectile.enemies.filter((projectileEnemy) => projectileEnemy.id !== enemy.id)
+                //                 console.log("Changement de cible")
+                //             }
+                //         })
+                //     })
+                // })
+            }
+
+            if (enemy.health <= 0) {
+                this.#Emanager.remove(enemy.id);
+                this.#view.coins += Math.round(25 + 25*(1-this.#waveNumber/100)/2)
+                if(typeof Number(localStorage.getItem("kills"))==="number"){
+                    localStorage.setItem("kills", String(Number(localStorage.getItem("kills"))+1))
+                }
+                else{
+                    localStorage.setItem("kills", String(1))
+                }
+                // ! Enemy removed
+                // console.log("Enemie removed");
+            }
+
+            // ! Enemies position -> !!! Mal de crâne !!!
+            // console.log(enemy.position);
         });
     }
 }

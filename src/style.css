@@ -251,7 +251,8 @@ span:active {
 .tower-select {
     width: 64px;
     height: 64px;
-    background-color: #333;
+    background-color: #7f7f7f;
+    color: #000000 !important;
     border: 2px solid #555;
     border-radius: 8px;
     cursor: pointer;

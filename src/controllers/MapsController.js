@@ -35,7 +35,6 @@ export class MapsController {
         this.#waveNumber = 0
         this.#hearts = 10
         this.#view.health = this.#hearts
-        this.#gameState = undefined
 
         // Wave management
         this.spawnQueue = [];
@@ -156,7 +155,7 @@ export class MapsController {
 
                 this.isWaveInProgress = true;
                 // console.log(`Starting Wave ${this.#waveNumber + 1}`);
-            } else if (this.allEnemies().length === 0 && this.#gameState==="inGame") {
+            } else if (this.allEnemies().length === 0 && this.#gameState==="inGame" && this.#waveNumber === waves.length && this.#hearts > 0) {
                 if(typeof Number(localStorage.getItem("wins"))==="number"){
                     localStorage.setItem("wins", String(Number(localStorage.getItem("wins"))+1))
                 }
@@ -165,8 +164,8 @@ export class MapsController {
                 }
                 this.endGame()
                 this.#view.EndWin()
-                this.callback()
                 this.#gameState="Win"
+                this.callback()
                 return;
             }
         }

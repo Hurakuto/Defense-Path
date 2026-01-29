@@ -67,13 +67,13 @@ export class MapsView {
         const debugMouseView = document.createElement("div");
         debugMouseView.style =
             "position: fixed; z-index: 999; right: 1rem; bottom: 1rem;";
-        document.body.append(debugMouseView);
+        // document.body.append(debugMouseView);
 
         window.addEventListener("mousemove", (event) => {
             const canvaBounds = this.#canva.getBoundingClientRect();
             this.#mouse.x = event.clientX;
             this.#mouse.y = event.clientY;
-            debugMouseView.innerHTML = `<p>X: ${this.#mouse.x} | Y: ${this.#mouse.y}<br>(X: ${this.#mouse.x - canvaBounds.left} | Y: ${this.#mouse.y - canvaBounds.top})</p>`;
+            // debugMouseView.innerHTML = `<p>X: ${this.#mouse.x} | Y: ${this.#mouse.y}<br>(X: ${this.#mouse.x - canvaBounds.left} | Y: ${this.#mouse.y - canvaBounds.top})</p>`;
 
             this.#activeTile = null;
             for (let i = 0; i < this.#placementTilesData.length; i++) {
@@ -174,7 +174,7 @@ export class MapsView {
 
         this.#img.src = this.chosenMap();
         this.#img.onerror = () => {
-            console.log("❌ Image introuvable");
+            throw new Error("❌ Image introuvable");
         };
     }
 

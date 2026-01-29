@@ -1,14 +1,14 @@
 const map1Waves = [
     { normal: 3, speedy: 0, tanky: 0, spawnInterval: 60, waveDelay: 600 },
-    { normal: 5, speedy: 0, tanky: 0, spawnInterval: 60, waveDelay: 600 },
-    { normal: 3, speedy: 2, tanky: 0, spawnInterval: 55, waveDelay: 600 },
-    { normal: 5, speedy: 3, tanky: 0, spawnInterval: 50, waveDelay: 600 },
-    { normal: 0, speedy: 5, tanky: 1, spawnInterval: 50, waveDelay: 600 },
-    { normal: 5, speedy: 2, tanky: 2, spawnInterval: 45, waveDelay: 600 },
-    { normal: 8, speedy: 3, tanky: 2, spawnInterval: 45, waveDelay: 600 },
-    { normal: 5, speedy: 8, tanky: 2, spawnInterval: 40, waveDelay: 600 },
-    { normal: 0, speedy: 10, tanky: 3, spawnInterval: 40, waveDelay: 600 },
-    { normal: 10, speedy: 10, tanky: 5, spawnInterval: 35, waveDelay: 600 },
+    // { normal: 5, speedy: 0, tanky: 0, spawnInterval: 60, waveDelay: 600 },
+    // { normal: 3, speedy: 2, tanky: 0, spawnInterval: 55, waveDelay: 600 },
+    // { normal: 5, speedy: 3, tanky: 0, spawnInterval: 50, waveDelay: 600 },
+    // { normal: 0, speedy: 5, tanky: 1, spawnInterval: 50, waveDelay: 600 },
+    // { normal: 5, speedy: 2, tanky: 2, spawnInterval: 45, waveDelay: 600 },
+    // { normal: 8, speedy: 3, tanky: 2, spawnInterval: 45, waveDelay: 600 },
+    // { normal: 5, speedy: 8, tanky: 2, spawnInterval: 40, waveDelay: 600 },
+    // { normal: 0, speedy: 10, tanky: 3, spawnInterval: 40, waveDelay: 600 },
+    // { normal: 10, speedy: 10, tanky: 5, spawnInterval: 35, waveDelay: 600 },
 ];
 
 const map2Waves = [

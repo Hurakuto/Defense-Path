@@ -51,10 +51,13 @@ export class AppController {
     }
 
     endgame() {
+
         const end = document.getElementById("end")
 
         setTimeout(() => {
-            end.remove();
+            end.remove()
+            this.#menuController = new MenuController(this.#startGame.bind(this))
+            this.#mapsController = undefined
             this.init();
         }, 3000);
     }

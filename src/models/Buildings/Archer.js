@@ -18,7 +18,7 @@ export class Archer extends Building{
 
         // ? Hitbox
         this.#ctx.beginPath();
-        this.#ctx.strokestyle = `rgba(0,0,255,${this.a})`; // Range debug
+        this.#ctx.strokeStyle = `rgba(0,0,255,${this.a})`; // Range debug
         this.#ctx.arc(
             this.center.x,
             this.center.y,

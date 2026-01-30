@@ -89,7 +89,7 @@ h1 {
 
 h2 {
     margin-top: 0%;
-    color: #ffffff66;
+    color: #ffffff;
     font-size: 1.3rem;
     font-weight: 200;
     text-decoration: underline;
@@ -101,14 +101,6 @@ span {
     padding: 5%;
     border-radius: 12px;
     background-color: transparent;
-}
-
-span:hover {
-    background-color: #282828;
-}
-
-span:active {
-    background-color: #3a3a3a;
 }
 
 #game{
@@ -184,12 +176,17 @@ span:active {
 }
 
 .entry{
-    background-color: #282828;
-    color: white;
+    background-color: #828282;
+    color: black;
     border-radius: 12px;
     font-size: 1.5rem;
     margin-top: 100%;
     text-align: center;
+}
+
+.entry::placeholder {
+  color: black;
+  opacity: 1; 
 }
 
 .entrer{

@@ -22,7 +22,6 @@ export class EnemiesManager {
                 return Tanky;
             
             case "lava":
-                console.log('Lava spawned')
                 return Lava;
 
             case "normal":
